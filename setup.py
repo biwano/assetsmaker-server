@@ -13,18 +13,20 @@ requires = [
     'pyramid_jinja2',
     'pyramid_debugtoolbar',
     'waitress',
+    'SQLAlchemy'
 ]
 
 tests_require = [
     'WebTest >= 1.3.1',  # py3 compat
     'pytest',
     'pytest-cov',
+    'sqlite'
 ]
 
 setup(
-    name='assetsdesigner',
+    name='mokdem',
     version='0.0',
-    description='assetsdesigner',
+    description='mokdem',
     long_description=README + '\n\n' + CHANGES,
     classifiers=[
         'Programming Language :: Python',
@@ -45,7 +47,7 @@ setup(
     install_requires=requires,
     entry_points={
         'paste.app_factory': [
-            'main = assetsdesigner:main',
+            'main = mokdem:main',
         ],
     },
 )
