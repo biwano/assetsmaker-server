@@ -13,14 +13,14 @@ requires = [
     'pyramid_jinja2',
     'pyramid_debugtoolbar',
     'waitress',
-    'SQLAlchemy'
+    'SQLAlchemy',
+    'bcrypt'
 ]
 
 tests_require = [
     'WebTest >= 1.3.1',  # py3 compat
     'pytest',
-    'pytest-cov',
-    'sqlite'
+    'pytest-cov'
 ]
 
 setup(
