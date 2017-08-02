@@ -3,7 +3,7 @@ from .meta import Base
 
 
 class User(Base):
-    __tablename__ = 'users'
+    __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
     login = Column(String, unique=True, nullable=False)

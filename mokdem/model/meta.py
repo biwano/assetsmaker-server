@@ -1,4 +1,5 @@
 from sqlalchemy.ext.declarative import declarative_base
+
 Base = declarative_base()
 
 
@@ -17,9 +18,21 @@ def db(request):
     return session
 
 
-def init_from_json(cls, dictionary):
+def init_from_dict(cls, dictionary):
     instance = cls()
     for k, v in dictionary.items():
         setattr(instance, k, v)
 
     return instance
+
+
+def to_dict(obj):
+    dict_obj = obj.__dict__
+    result = {}
+    for k, v in dict_obj.items():
+        v = dict_obj[k]
+        if (v.__class__.__name__ == 'InstanceState'):
+            pass
+        else:
+            result[k] = v
+    return result

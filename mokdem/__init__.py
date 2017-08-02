@@ -16,7 +16,7 @@ def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
 
-    config = Configurator(settings=settings)
+    config = Configurator(settings=settings, root_factory='.security.Root')
     # Security policies
     authn_policy = AuthTktAuthenticationPolicy(
         settings['authorization.secret'], callback=groupfinder,
@@ -29,13 +29,14 @@ def main(global_config, **settings):
     config.registry.dbmaker = sessionmaker(bind=engine)
     config.add_request_method(db, reify=True)
 
-#    config.include('pyramid_jinja2')
     config.add_static_view('app', 'app', cache_max_age=3600)
     config.add_route('auth_register', 'api/auth/register', request_method='POST')
     config.add_route('auth_info', 'api/auth/info', request_method='GET')
     config.add_route('auth_login', 'api/auth/info', request_method='POST')
     config.add_route('auth_logout', 'api/auth/info', request_method='DELETE')
-#    config.add_route('home', '/')
+
+    config.add_route('project_create', 'api/projects', request_method='POST', permission='authenticated')
+
     config.scan()
 
     app = config.make_wsgi_app()

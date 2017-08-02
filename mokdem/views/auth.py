@@ -3,7 +3,7 @@ from pyramid.security import (
     remember,
     forget,
     )
-from ..model import init_from_json, User
+from ..model import init_from_dict, User
 import bcrypt
 
 
@@ -29,9 +29,10 @@ class AuthViews(object):
             if (checkuser.email == data['email']):
                 return {"status": "error_email_taken"}
 
-        user = init_from_json(User, data)
+        user = init_from_dict(User, data)
         user.password = self.encrypt(data['password'])
         self.db.merge(user)
+
         headers = remember(self.request, user.login)
         response = self.request.response
         response.headerlist.extend(headers)
