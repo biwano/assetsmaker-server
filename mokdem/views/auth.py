@@ -5,6 +5,7 @@ from pyramid.security import (
     )
 from ..model import init_from_dict, User
 import bcrypt
+from sqlalchemy import and_
 
 
 @view_defaults(renderer='json')
@@ -12,9 +13,11 @@ class AuthViews(object):
     def __init__(self, request):
         self.request = request
         self.db = self.request.db
+        self.salt = self.request.settings_value("auth.salt").encode("ascii")
 
     def encrypt(self, password):
-        return bcrypt.hashpw(password.encode('utf8'), bcrypt.gensalt())
+        encrypted = bcrypt.hashpw(password.encode('utf8'), self.salt)
+        return encrypted
 
     @view_config(route_name="auth_register")
     def register(self):
@@ -60,14 +63,13 @@ class AuthViews(object):
         data = self.request.json_body
         password = self.encrypt(data['password'])
         checkuser = self.db.query(User)\
-            .filter(User.login == data['login']
-                    and User.password == password)\
+            .filter(and_(User.login == data['login'], User.password == password))\
             .first()
         if (checkuser is not None):
             headers = remember(self.request, checkuser.login)
+            response = self.request.response
+            response.headerlist.extend(headers)
+            return self.infoBE(checkuser.login)
         else:
             headers = forget(self.request)
-        response = self.request.response
-        response.headerlist.extend(headers)
-
-        return self.infoBE(checkuser.login)
+            return self.infoBE(None)

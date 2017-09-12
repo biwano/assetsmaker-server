@@ -1,4 +1,4 @@
-from .tests import AuthTests
+from .tests import AuthTests, ProjectsTests
 
 
 class Setup():
@@ -7,5 +7,8 @@ class Setup():
         auth = AuthTests(app, login='mok',
                          password='toto',
                          email='mok@mok.com')
+        projects = ProjectsTests(app)
         auth.register()
         auth.log_in()
+        projects.createProject("Setup Project 1")
+        projects.createProject("Setup Project 2")

@@ -4,9 +4,14 @@ class AuthTests():
         self.login = login
         self.password = password
         self.email = email
+        self.auth_tkt = None
+
 
     def log(self, info):
         print("setup: " + info)
+
+    
+
 
     def register(self):
         self.log('register')

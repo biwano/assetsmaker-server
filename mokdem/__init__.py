@@ -7,7 +7,7 @@ from sqlalchemy import engine_from_config
 from sqlalchemy.orm import sessionmaker
 
 from .model import db, Base
-from .helpers import parse_setting
+from .helpers import parse_setting, settings_value
 from .security import groupfinder
 from .setup import Setup
 
@@ -28,6 +28,7 @@ def main(global_config, **settings):
     engine = engine_from_config(settings, prefix='sqlalchemy.config.')
     config.registry.dbmaker = sessionmaker(bind=engine)
     config.add_request_method(db, reify=True)
+    config.add_request_method(settings_value)
 
     config.add_static_view('app', 'app', cache_max_age=3600)
     config.add_route('auth_register', 'api/auth/register', request_method='POST')
@@ -36,6 +37,8 @@ def main(global_config, **settings):
     config.add_route('auth_logout', 'api/auth/info', request_method='DELETE')
 
     config.add_route('project_create', 'api/projects', request_method='POST', permission='authenticated')
+    config.add_route('project_list', 'api/projects', request_method='GET', permission='authenticated')
+    config.add_route('project_get', 'api/projects/{id}', request_method='GET', permission='authenticated')
 
     config.scan()
 

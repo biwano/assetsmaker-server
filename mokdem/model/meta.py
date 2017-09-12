@@ -27,12 +27,16 @@ def init_from_dict(cls, dictionary):
 
 
 def to_dict(obj):
-    dict_obj = obj.__dict__
-    result = {}
-    for k, v in dict_obj.items():
-        v = dict_obj[k]
-        if (v.__class__.__name__ == 'InstanceState'):
-            pass
-        else:
-            result[k] = v
+    if type(obj) == list:
+        result = [to_dict(o) for o in obj]
+
+    else:
+        dict_obj = obj.__dict__
+        result = {}
+        for k, v in dict_obj.items():
+            v = dict_obj[k]
+            if (v.__class__.__name__ == 'InstanceState'):
+                pass
+            else:
+                result[k] = v
     return result
