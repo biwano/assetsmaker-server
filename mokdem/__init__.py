@@ -43,7 +43,7 @@ def main(global_config, **settings):
     config.scan()
 
     app = config.make_wsgi_app()
-
+    
     if (parse_setting(settings, 'sqlalchemy.drop')):
         Base.metadata.drop_all(engine)
         Base.metadata.create_all(engine)

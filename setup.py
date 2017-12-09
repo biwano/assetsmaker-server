@@ -14,7 +14,8 @@ requires = [
     'pyramid_debugtoolbar',
     'waitress',
     'SQLAlchemy',
-    'bcrypt'
+    'bcrypt',
+    'wsgicors'
 ]
 
 tests_require = [
