@@ -20,7 +20,7 @@ def main(global_config, **settings):
     # Security policies
     authn_policy = AuthTktAuthenticationPolicy(
         settings['authorization.secret'], callback=groupfinder,
-        hashalg='sha512')
+        hashalg='sha512', secure=False)
     config.set_authentication_policy(authn_policy)
     authz_policy = ACLAuthorizationPolicy()
     config.set_authorization_policy(authz_policy)
